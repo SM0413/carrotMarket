@@ -2,27 +2,29 @@ import type { NextPage } from "next";
 
 const Home: NextPage = () => {
   return (
-    <div className="bg-slate-400 xl:place-content-center py-20 px-10 grid gap-10 lg:grid-cols-2 xl:grid-cols-3 min-h-screen">
-      <div className="transition bg-white flex flex-col justify-between p-6 rounded-3xl shadow-2xl ">
-        <span className="font-semibold text-3xl">Select Item</span>
+    <div className="bg-slate-400 dark xl:place-content-center py-20 px-10 grid gap-10 lg:grid-cols-2 xl:grid-cols-3 min-h-screen">
+      <div className="transition bg-white dark:bg-black flex flex-col justify-between p-6 rounded-3xl shadow-2xl ">
+        <span className="font-semibold dark:text-white text-3xl">
+          Select Item
+        </span>
         <ul>
           {[1, 2, 3, 4].map((i) => (
             <div
               key={i}
-              className=" flex justify-between my-2 odd:bg-blue-50 even:bg-yellow-50"
+              className=" flex justify-between my-2 dark:bg-gray-800 "
             >
-              <span className=" text-gray-500">Gray Chair</span>
-              <span className=" font-semibold">$19</span>
+              <span className=" text-gray-500 dark:text-white">Gray Chair</span>
+              <span className="  dark:text-white font-semibold">$19</span>
             </div>
           ))}
         </ul>
 
-        <div className="flex justify-between mt-2 pt-2 border-t-2 border-dashed">
+        <div className="flex justify-between dark:text-white mt-2 pt-2 border-t-2 border-dashed">
           <span>Total</span>
           <span className=" font-semibold">$99</span>
         </div>
         <div className="text-center">
-          <button className=" mt-5 bg-blue-500 rounded-3xl text-white p-3  w-1/2 mx-auto hover:bg-teal-500 hover:text-black active:bg-yellow-500 focus:bg-red-500">
+          <button className=" mt-5 bg-blue-500 rounded-3xl text-white p-3  w-1/2 mx-auto hover:bg-teal-500 dark:hover:bg-gray-700 dark:hover:text-white hover:text-black active:bg-yellow-500  dark:bg-black dark:border-white dark:border">
             Checkout
           </button>
         </div>
