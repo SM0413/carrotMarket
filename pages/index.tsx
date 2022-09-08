@@ -17,8 +17,10 @@ const Home: NextPage = () => {
           <span>Total</span>
           <span className=" font-semibold">$99</span>
         </div>
-        <div className=" mt-5 bg-blue-500 rounded-3xl text-white p-3 text-center  w-1/2 mx-auto">
-          Checkout
+        <div className="text-center">
+          <button className=" mt-5 bg-blue-500 rounded-3xl text-white p-3  w-1/2 mx-auto hover:bg-teal-500 hover:text-black active:bg-yellow-500 focus:bg-red-500">
+            Checkout
+          </button>
         </div>
       </div>
 
@@ -47,7 +49,7 @@ const Home: NextPage = () => {
 
       <div className="bg-white p-6 rounded-3xl shadow-2xl ">
         <div className="flex mb-5 justify-between items-center">
-          <span>⬅</span>
+          <span className="text-2xl">🔙</span>
           <div className="space-x-3">
             <span>⭐️ 4.9</span>
             <span className="shadow-xl p-2 rounded-md">❤️</span>
@@ -58,10 +60,10 @@ const Home: NextPage = () => {
           <span className="font-medium text-xl">Swoon Lounge</span>
           <span className="text-xs text-gray-500">Chair</span>
           <div className="mt-3 mb-5 flex justify-between items-center">
-            <div>
-              <input type="radio" />
-              <input type="radio" />
-              <input type="radio" />
+            <div className="space-x-2">
+              <button className="w-5 h-5 rounded-full bg-yellow-500" />
+              <button className="w-5 h-5 rounded-full bg-indigo-500" />
+              <button className="w-5 h-5 rounded-full bg-teal-500" />
             </div>
             <div className="flex items-center space-x-5">
               <button className="p-1.5 bg-blue-200 flex justify-center items-center aspect-square w-10 text-xl text-gray-500 rounded-lg">
