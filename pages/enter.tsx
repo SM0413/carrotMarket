@@ -19,7 +19,6 @@ const Enter: NextPage = () => {
   const onValid = (validForm: IEnterForm) => {
     enter(validForm);
   };
-  console.log(loading, data, error);
   const [method, setMethod] = useState<"email" | "phone">("email");
   const onEmailClick = () => {
     reset();
