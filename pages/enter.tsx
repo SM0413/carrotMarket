@@ -16,10 +16,10 @@ const Enter: NextPage = () => {
   const [submitting, setSubmitting] = useState(false);
   const { register, handleSubmit, reset } = useForm<IEnterForm>();
 
-  const onValid = (data: IEnterForm) => {
-    enter(data);
+  const onValid = (validForm: IEnterForm) => {
+    enter(validForm);
   };
-
+  console.log(loading, data, error);
   const [method, setMethod] = useState<"email" | "phone">("email");
   const onEmailClick = () => {
     reset();
