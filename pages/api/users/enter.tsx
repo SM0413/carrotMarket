@@ -30,13 +30,13 @@ async function handler(
     },
   });
   if (phone) {
-    await twilioClient.messages.create({
+    /* await twilioClient.messages.create({
       messagingServiceSid: process.env.MESSAGE_SERVICE_SID,
       to: process.env.PHONE_NUMBER!,
       body: "어제 내가 말한 메일 보내는거 ㅋㅋ",
-    });
+    }); */
   } else if (email) {
-    const mailOptions = {
+    /* const mailOptions = {
       from: "kbjtmdals@naver.com",
       to: "sdko0413@gmail.com",
       subject: "Nomad Carrot Authentication Email",
@@ -44,7 +44,7 @@ async function handler(
     };
     const result = await smtpTransport.sendMail(
       mailOptions,
-      (error: any, responses: any) => {
+      (error, responses) => {
         if (error) {
           console.log(error);
           return null;
@@ -55,6 +55,7 @@ async function handler(
       }
     );
     smtpTransport.close();
+    console.log(result); */
   }
   return res.json({ ok: true });
 }
