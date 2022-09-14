@@ -1,7 +1,10 @@
+import twilio from "twilio";
 import client from "@libs/server/client";
 import withHandler, { IResponseType } from "@libs/server/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
+import smtpTransport from "@libs/server/email";
 
+const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse<IResponseType>
@@ -26,7 +29,33 @@ async function handler(
       },
     },
   });
-
+  if (phone) {
+    await twilioClient.messages.create({
+      messagingServiceSid: process.env.MESSAGE_SERVICE_SID,
+      to: process.env.PHONE_NUMBER!,
+      body: "어제 내가 말한 메일 보내는거 ㅋㅋ",
+    });
+  } else if (email) {
+    const mailOptions = {
+      from: "kbjtmdals@naver.com",
+      to: "sdko0413@gmail.com",
+      subject: "Nomad Carrot Authentication Email",
+      text: `Authentication Code : ${payload}`,
+    };
+    const result = await smtpTransport.sendMail(
+      mailOptions,
+      (error: any, responses: any) => {
+        if (error) {
+          console.log(error);
+          return null;
+        } else {
+          console.log(responses);
+          return null;
+        }
+      }
+    );
+    smtpTransport.close();
+  }
   return res.json({ ok: true });
 }
 
