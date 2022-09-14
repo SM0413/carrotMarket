@@ -3,12 +3,22 @@ import Button from "@components/button";
 import Layout from "@components/layout";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import { Product } from "@prisma/client";
+import { Product, User } from "@prisma/client";
 import Link from "next/link";
+
+interface IProductWithUser extends Product {
+  user: User;
+}
+
+interface IItemDetailResponse {
+  ok: boolean;
+  product: IProductWithUser;
+  relatedProducts: Product[];
+}
 
 const ItemDetail: NextPage = () => {
   const router = useRouter();
-  const { data } = useSWR(
+  const { data } = useSWR<IItemDetailResponse>(
     router.query.id && `/api/products/${router.query.id}`
   );
   return (
@@ -64,12 +74,20 @@ const ItemDetail: NextPage = () => {
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Similar items</h2>
           <div className=" mt-6 grid grid-cols-2 gap-4">
-            {[1, 2, 3, 4, 5, 6].map((_, i) => (
-              <div key={i}>
-                <div className="h-56 w-full mb-4 bg-slate-300" />
-                <h3 className="text-gray-700 -mb-1">Galaxy S60</h3>
-                <span className="text-sm font-medium text-gray-900">$6</span>
-              </div>
+            {data?.relatedProducts.map((products) => (
+              <>
+                <Link href={`/product/detail/${products.id}`}>
+                  <div key={products.id}>
+                    <div className="hover:cursor-pointer h-56 w-full mb-4 bg-slate-300" />
+                    <h3 className="hover:cursor-pointer text-gray-700 -mb-1">
+                      {!data.relatedProducts ? "Loading..." : products.name}
+                    </h3>
+                    <span className="text-sm font-medium text-gray-900">
+                      ${data.relatedProducts && products.price}
+                    </span>
+                  </div>
+                </Link>
+              </>
             ))}
           </div>
         </div>
