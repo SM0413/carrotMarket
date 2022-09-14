@@ -10,7 +10,7 @@ async function handler(
   res: NextApiResponse<IResponseType>
 ) {
   const { phone, email } = req.body;
-  const user = phone ? { phone: +phone } : { email };
+  const user = phone ? { phone: phone } : { email };
   if (!user) return res.status(500).json({ ok: false });
   const payload = Math.floor(100000 + Math.random() * 900000) + "";
   const token = await client.token.create({
