@@ -81,7 +81,8 @@ const CommunityPostDetail: NextPage = () => {
     if (answerData && answerData.ok) {
       reset();
     }
-  }, [answerData, reset]);
+    mutate();
+  }, [answerData, reset, mutate]);
   return (
     <Layout canGoBack>
       <div>
@@ -93,7 +94,7 @@ const CommunityPostDetail: NextPage = () => {
           <Link href={`/users/profiles/${data?.post?.user?.id}`}>
             <div>
               <a className="text-sm font-medium text-gray-700">
-                {data?.post?.user?.name}
+                {data ? data?.post?.user?.name : "Loading..."}
               </a>
               <a className="text-xs font-medium text-gray-500">
                 View profile &rarr;
@@ -104,7 +105,7 @@ const CommunityPostDetail: NextPage = () => {
         <div>
           <div className="mt-2 px-4 text-gray-700">
             <span className="text-orange-500 font-medium">Q.</span>
-            {data?.post?.user?.name}
+            {data ? data?.post.question : "Loading..."}
           </div>
           <div className="flex px-4 space-x-5 mt-3 text-gray-700 py-2.5 border-t border-b-[2px]  w-full">
             <button
