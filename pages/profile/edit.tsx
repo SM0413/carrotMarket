@@ -38,18 +38,28 @@ const EditProfile: NextPage = () => {
   }, [user, setValue]);
   const [editProfile, { data, loading }] =
     useMutation<IEditProfileResponse>(`/api/users/me`);
-  const onValid = ({ email, phone, name, avatar }: IEditProfileForm) => {
+  const onValid = async ({ email, phone, name, avatar }: IEditProfileForm) => {
     if (loading) return;
     if (email === "" && phone === "" && name === "") {
       return setError("formErrors", {
         message: "Email or Phone or Name are required. You need to choose one.",
       });
     }
-    editProfile({
-      email,
-      phone,
-      name,
-    });
+    if (avatar && avatar.length > 0) {
+      const cloudFlareRepuest = await (await fetch(`/api/files`)).json();
+      editProfile({
+        email,
+        phone,
+        name,
+        // avatarURL,
+      });
+    } else {
+      editProfile({
+        email,
+        phone,
+        name,
+      });
+    }
   };
   useEffect(() => {
     if (data && !data.ok) {
