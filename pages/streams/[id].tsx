@@ -63,14 +63,13 @@ const Streame: NextPage = () => {
         } as any),
       false
     );
-    scrollRef?.current?.scrollIntoView();
-    // sendMessage(form);
+    sendMessage(form);
     reset();
   };
 
-  useEffect(() => {
-    scrollRef?.current?.scrollIntoView();
-  }, []);
+  // useEffect(() => {
+  //   scrollRef?.current?.scrollIntoView();
+  // }, []);
 
   useEffect(() => {
     if (sendMessageData && sendMessageData.ok) {
