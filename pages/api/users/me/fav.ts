@@ -10,15 +10,23 @@ async function handler(
   const {
     session: { user },
   } = req;
-  const favs = await client.fav.findMany({
+  const fav = await client.fav.findMany({
     where: {
       userId: user?.id,
     },
     include: {
-      product: true,
+      product: {
+        include: {
+          _count: {
+            select: {
+              fav: true,
+            },
+          },
+        },
+      },
     },
   });
-  res.json({ ok: true, favs });
+  res.json({ ok: true, fav });
 }
 
 export default withApiSession(withHandler({ methods: ["GET"], handler }));
