@@ -61,7 +61,6 @@ const EditProfile: NextPage = () => {
         phone,
         name,
         avatarId: id,
-        // avatarURL,
       });
     } else {
       editProfile({
