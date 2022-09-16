@@ -25,12 +25,7 @@ const Create: NextPage = () => {
   const router = useRouter();
   const [createLive, { data, loading }] =
     useMutation<ICreateResponse>(`/api/streams`);
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm<ICreateStream>();
+  const { register, handleSubmit } = useForm<ICreateStream>();
   const onValid = (form: ICreateStream) => {
     if (loading) return;
     createLive(form);
@@ -51,7 +46,7 @@ const Create: NextPage = () => {
           type="text"
         />
         <Input
-          register={register("price", { required: true })}
+          register={register("price", { required: true, valueAsNumber: true })}
           required
           label="Price"
           placeholder="0.00"
