@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const pathName = useRouter();
-  useUser(pathName.asPath);
   return (
     <SWRConfig
       value={{
