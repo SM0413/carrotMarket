@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SWRConfig
       value={{
-        refreshInterval: 1000,
+        refreshInterval: 500,
         fetcher: (url: string) =>
           fetch(url).then((response) => response.json()),
       }}

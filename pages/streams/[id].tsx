@@ -39,7 +39,8 @@ const Streame: NextPage = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const { data, mutate } = useSWR<IStreamResponse>(
-    router.query.id ? `/api/streams/${router.query.id}` : null
+    router.query.id ? `/api/streams/${router.query.id}` : null,
+    { refreshInterval: 1000 }
   );
 
   const [sendMessage, { data: sendMessageData, loading }] = useMutation(
@@ -47,12 +48,32 @@ const Streame: NextPage = () => {
   );
   const onValid = (form: IMessageForm) => {
     if (loading) return;
-    sendMessage(form);
+    mutate(
+      (prev) =>
+        prev &&
+        ({
+          ...prev,
+          stream: {
+            ...prev.stream,
+            messages: [
+              ...prev.stream.messages,
+              { id: Date.now(), message: form.message, user: { ...user } },
+            ],
+          },
+        } as any),
+      false
+    );
+    scrollRef?.current?.scrollIntoView();
+    // sendMessage(form);
     reset();
   };
+
+  useEffect(() => {
+    scrollRef?.current?.scrollIntoView();
+  }, []);
+
   useEffect(() => {
     if (sendMessageData && sendMessageData.ok) {
-      mutate();
       scrollRef?.current?.scrollIntoView();
     }
   }, [sendMessageData, mutate]);
