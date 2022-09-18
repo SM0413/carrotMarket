@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import useUser from "@libs/client/useUser";
 import useMutation from "@libs/client/useMutation";
-import useSWR from "swr";
+import { useRouter } from "next/router";
 
 interface IEditProfileForm {
   name?: string;
@@ -22,6 +22,7 @@ interface IEditProfileResponse {
 }
 
 const EditProfile: NextPage = () => {
+  const router = useRouter();
   const { user } = useUser();
   const {
     register,
@@ -39,7 +40,8 @@ const EditProfile: NextPage = () => {
       setAvatarPreview(
         `https://imagedelivery.net/GKiagmM6jbANrpjhvaEuYQ/${user?.avatar}/avatar`
       );
-  }, [user, setValue]);
+  }, [user, setValue, router]);
+
   const [editProfile, { data, loading }] =
     useMutation<IEditProfileResponse>(`/api/users/me`);
   const onValid = async ({ email, phone, name, avatar }: IEditProfileForm) => {

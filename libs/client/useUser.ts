@@ -12,6 +12,9 @@ export default function useUser() {
   const router = useRouter();
   const { data, error } = useSWR<IProfileResponse>("/api/users/me");
   useEffect(() => {
+    if (router.asPath === "/") {
+      router.replace("/main");
+    }
     if (data && !data.ok && router.asPath !== "/enter") {
       router.replace("/enter");
     }
