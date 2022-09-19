@@ -10,6 +10,7 @@ import Link from "next/link";
 import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
 import { useForm } from "react-hook-form";
+import useUser from "@libs/client/useUser";
 
 interface IAnswerForm {
   answer: string;
@@ -39,6 +40,7 @@ interface IAnswerResponse {
 }
 
 const CommunityPostDetail: NextPage = () => {
+  const { user } = useUser();
   const router = useRouter();
   const { register, handleSubmit, reset } = useForm<IAnswerForm>();
   const onValid = (answerForm: IAnswerForm) => {
@@ -90,7 +92,14 @@ const CommunityPostDetail: NextPage = () => {
           동네질문
         </span>
         <div className="flex mb-3 px-4 cursor-pointer pb-3  border-b items-center space-x-3">
-          <div className="w-10 h-10 rounded-full bg-slate-300" />
+          {user?.avatar ? (
+            <img
+              src={`https://imagedelivery.net/GKiagmM6jbANrpjhvaEuYQ/${user?.avatar}/avatar`}
+              className="w-8 h-8 bg-slate-200 rounded-full"
+            />
+          ) : (
+            <div className="w-8 h-8 bg-slate-200 rounded-full" />
+          )}
           <Link href={`/users/profiles/${data?.post?.user?.id}`}>
             <div>
               <a className="text-sm font-medium text-gray-700">
@@ -153,7 +162,14 @@ const CommunityPostDetail: NextPage = () => {
         <div className="px-4 my-5 space-y-5">
           {data?.post?.answers?.map((answer) => (
             <div key={answer.id} className="flex items-start space-x-3">
-              <div className="w-8 h-8 bg-slate-200 rounded-full" />
+              {user?.avatar ? (
+                <img
+                  src={`https://imagedelivery.net/GKiagmM6jbANrpjhvaEuYQ/${user?.avatar}/avatar`}
+                  className="w-10 h-10 rounded-full bg-slate-300"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-slate-300" />
+              )}
               <div>
                 <span className="text-sm block font-medium text-gray-700">
                   {answer.user.name}

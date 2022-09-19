@@ -4,11 +4,14 @@ import FloatingButton from "@components/floating-button";
 import Layout from "@components/layout";
 import useSWR from "swr";
 import { Stream } from "@prisma/client";
+import Image from "next/image";
+import { useEffect } from "react";
 
 interface IStreamsResponse {
   ok: boolean;
   streams: Stream[];
 }
+
 const Streams: NextPage = () => {
   const { data } = useSWR<IStreamsResponse>(`/api/streams`);
   return (
@@ -17,7 +20,13 @@ const Streams: NextPage = () => {
         {data?.streams?.map((stream) => (
           <Link key={stream.id} href={`/streams/${stream.id}`}>
             <a className="pt-4 block  px-4">
-              <div className="w-full rounded-md shadow-sm bg-slate-300 aspect-video" />
+              <div className="relative border w-full rounded-md shadow-sm bg-slate-300 aspect-video text-center justify-center">
+                {stream.cloudflareKey !== null ? (
+                  <Image layout="fill" src={stream.coverImg} />
+                ) : (
+                  "Not yet Streamming"
+                )}
+              </div>
               <h1 className="text-2xl mt-2 font-bold text-gray-900">
                 {stream.name}
               </h1>

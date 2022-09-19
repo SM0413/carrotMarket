@@ -23,6 +23,7 @@ interface IEditProfileResponse {
 }
 
 const EditProfile: NextPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { user } = useUser();
   const {
@@ -45,6 +46,7 @@ const EditProfile: NextPage = () => {
   const [editProfile, { data, loading }] =
     useMutation<IEditProfileResponse>(`/api/users/me`);
   const onValid = async ({ email, phone, name, avatar }: IEditProfileForm) => {
+    setIsLoading(true);
     if (loading) return;
     if (email === "" && phone === "" && name === "") {
       return setError("formErrors", {
@@ -64,6 +66,7 @@ const EditProfile: NextPage = () => {
         name,
         avatarId: id,
       });
+      setIsLoading(false);
       router.push("/profile");
     } else {
       editProfile({
@@ -71,6 +74,7 @@ const EditProfile: NextPage = () => {
         phone,
         name,
       });
+      setIsLoading(false);
       router.push("/profile");
     }
   };
@@ -137,7 +141,11 @@ const EditProfile: NextPage = () => {
             {errors.formErrors.message}
           </span>
         ) : null}
-        <Button text={loading ? "Loading..." : "Update profile"} />
+        <Button
+          text={
+            isLoading ? "Loading..." : loading ? "Loading..." : "Update profile"
+          }
+        />
       </form>
     </Layout>
   );

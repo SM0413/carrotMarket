@@ -17,7 +17,6 @@ interface ProductListResponse {
 
 export default function ProductList({ kind }: ProductListProps) {
   const { data } = useSWR<ProductListResponse>(`/api/users/me/${kind}`);
-  console.log(data);
   return data ? (
     <>
       {data[kind]?.map((record) => (
@@ -28,6 +27,7 @@ export default function ProductList({ kind }: ProductListProps) {
           price={record.product.price}
           hearts={record.product._count.fav}
           comments={0}
+          photo={record.product.image}
         />
       ))}
     </>

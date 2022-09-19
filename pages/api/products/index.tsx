@@ -13,6 +13,7 @@ async function handler(
         _count: {
           select: {
             fav: true,
+            talktoseller: true,
           },
         },
       },
@@ -40,6 +41,21 @@ async function handler(
         },
       },
     });
+    const createSale = await client.sale.create({
+      data: {
+        user: {
+          connect: {
+            id: user?.id,
+          },
+        },
+        product: {
+          connect: {
+            id: Number(product.id),
+          },
+        },
+      },
+    });
+    console.log("CreateSale =>", createSale);
     res.json({ ok: true, product });
   }
 }

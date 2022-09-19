@@ -26,7 +26,6 @@ export default function Item({
   photo,
   id,
 }: ItemProps) {
-  console.log(photo);
   return (
     <Link href={`/products/${id}`}>
       <a className="flex px-4 pt-5 cursor-pointer justify-between">

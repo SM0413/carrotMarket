@@ -13,25 +13,27 @@ datasource db {
 }
 
 model User {
-  id              Int         @id @default(autoincrement())
+  id              Int            @id @default(autoincrement())
   name            String?
-  phone           String?     @unique
-  email           String?     @unique
+  phone           String?        @unique
+  email           String?        @unique
   avatar          String?
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
   tokens          Token[]
   Product         Product[]
   fav             Fav[]
   posts           Post[]
   answer          Answer[]
   wondering       Wondering[]
-  writtenReviews  Review[]    @relation(name: "writtenReviews")
-  receivedReviews Review[]    @relation(name: "receivedReviews")
+  writtenReviews  Review[]       @relation(name: "writtenReviews")
+  receivedReviews Review[]       @relation(name: "receivedReviews")
   sale            Sale[]
   purchase        Purchase[]
   stream          Stream[]
   messages        Message[]
+  sellerTalk      TalkToSeller[] @relation(name: "sellerTalk")
+  buyerTalk       TalkToSeller[] @relation(name: "buyerTalk")
 }
 
 model Token {
@@ -44,18 +46,19 @@ model Token {
 }
 
 model Product {
-  id          Int        @id @default(autoincrement())
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      Int
-  image       String     @db.Text
-  name        String
-  price       Int
-  description String     @db.MediumText
-  fav         Fav[]
-  sale        Sale[]
-  purchase    Purchase[]
+  id           Int            @id @default(autoincrement())
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int
+  image        String         @db.Text
+  name         String
+  price        Int
+  description  String         @db.MediumText
+  fav          Fav[]
+  sale         Sale[]
+  purchase     Purchase[]
+  talktoseller TalkToSeller[]
 }
 
 model Fav {
@@ -147,6 +150,7 @@ model Stream {
   cloudflareId  String
   cloudflareURL String
   cloudflareKey String
+  coverImg      String    @default("")
 }
 
 model Message {
@@ -158,4 +162,18 @@ model Message {
   message   String   @db.MediumText
   stream    Stream   @relation(fields: [streamId], references: [id], onDelete: Cascade)
   streamId  Int
+}
+
+model TalkToSeller {
+  id              Int      @id @default(autoincrement())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  buyer           User     @relation(name: "buyerTalk", fields: [createdBuyerId], references: [id], onDelete: Cascade)
+  createdBuyerId  Int
+  seller          User     @relation(name: "sellerTalk", fields: [createdSellerId], references: [id], onDelete: Cascade)
+  createdSellerId Int
+  message         String   @db.MediumText
+  product         Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId       Int
+  comments        Int      @default(0)
 }

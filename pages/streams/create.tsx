@@ -8,6 +8,7 @@ import useMutation from "@libs/client/useMutation";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { Stream } from "@prisma/client";
+import useSWR from "swr";
 
 interface ICreateStream {
   name: string;
@@ -21,6 +22,12 @@ interface ICreateResponse {
   stream: Stream;
 }
 
+interface IApiResult {
+  isInput: boolean;
+  live: boolean;
+  status: string;
+  videoUID: string;
+}
 const Create: NextPage = () => {
   const router = useRouter();
   const [createLive, { data, loading }] =
@@ -30,6 +37,7 @@ const Create: NextPage = () => {
     if (loading) return;
     createLive(form);
   };
+
   useEffect(() => {
     if (data && data.ok) {
       router.push(`/streams/${data.stream.id}`);

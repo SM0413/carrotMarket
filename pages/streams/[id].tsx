@@ -7,7 +7,8 @@ import { useForm } from "react-hook-form";
 import useMutation from "@libs/client/useMutation";
 import { Stream } from "@prisma/client";
 import useUser from "@libs/client/useUser";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import streams from "pages/api/streams";
 
 interface IStreamMessage {
   message: string;
@@ -29,6 +30,10 @@ interface IStreamResponse {
 
 interface IMessageForm {
   message: string;
+}
+
+interface IUpdateCoverIMG {
+  ok: boolean;
 }
 
 const Streame: NextPage = () => {
@@ -66,10 +71,13 @@ const Streame: NextPage = () => {
     sendMessage(form);
     reset();
   };
-
-  // useEffect(() => {
-  //   scrollRef?.current?.scrollIntoView();
-  // }, []);
+  const [uploadDatas, { data: uploadData, loading: uploadLoading }] =
+    useMutation<IUpdateCoverIMG>(`/api/streams/img`);
+  const [isUploadCoverImg, setIsUploadCoverImg] = useState(false);
+  const ClickUploadCoverIMG = () => {
+    setIsUploadCoverImg(true);
+    uploadDatas(router.query);
+  };
 
   useEffect(() => {
     if (sendMessageData && sendMessageData.ok) {
@@ -79,18 +87,51 @@ const Streame: NextPage = () => {
   return (
     <Layout canGoBack>
       <div className="py-10 px-4  space-y-4">
-        <div className="w-full rounded-md shadow-sm bg-slate-300 aspect-video" />
+        {!isUploadCoverImg ? (
+          <span
+            onClick={ClickUploadCoverIMG}
+            className="font-mono mb-0 hover:cursor-pointer"
+          >
+            썸네일 업로드
+          </span>
+        ) : (
+          <span
+            onClick={ClickUploadCoverIMG}
+            className="font-mono mb-0 hover:cursor-pointer"
+          >
+            썸네일 재 업로드
+          </span>
+        )}
+        {data?.stream.cloudflareId ? (
+          <iframe
+            className="w-full aspect-video  rounded-md shadow-sm"
+            src={`https://iframe.videodelivery.net/${data?.stream.cloudflareId}`}
+            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+            allowFullScreen={true}
+          ></iframe>
+        ) : null}
         <div className="mt-5">
           <h1 className="text-3xl font-bold text-gray-900">
-            {data ? data.stream.name : "Loading..."}
+            {data ? data?.stream.name : "Loading..."}
           </h1>
           <span className="text-2xl block mt-3 text-gray-900">
             ${data && data.stream.price}
           </span>
+
           <p className=" my-6 text-gray-700">
             {data ? data?.stream.description : "Loading..."}
           </p>
         </div>
+        {data?.stream.userId === user?.id && (
+          <div className="flex flex-col space-y-2 bg-orange-300 rounded-md px-5 overflow-scroll">
+            <span className="font-medium">Stream Keys(secret)</span>
+
+            <span className="font-medium">CloudFlareURL⤵️</span>
+            {data?.stream.cloudflareURL}
+            <span className="font-medium">CloudFlareKey⤵️</span>
+            {data?.stream.cloudflareKey}
+          </div>
+        )}
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Live Chat</h2>
           <div className="py-10 pb-16 h-[50vh] overflow-y-scroll  px-4 space-y-4">

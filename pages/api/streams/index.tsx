@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import withHandler, { IResponseType } from "@libs/server/withHandler";
 import client from "@libs/server/client";
 import { withApiSession } from "@libs/server/withSession";
+
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse<IResponseType>
@@ -28,13 +29,17 @@ async function handler(
         }
       )
     ).json();
-    console.log("uid, streamKey, url=>");
-    console.log(uid, streamKey, url);
+    const { videoUID } = await (
+      await fetch(
+        `https://customer-m033z5x00ks6nunl.cloudflarestream.com/${uid}/lifecycle`
+      )
+    ).json();
     const stream = await client.stream.create({
       data: {
         cloudflareId: uid,
         cloudflareURL: url,
         cloudflareKey: streamKey,
+        coverImg: `https://customer-m033z5x00ks6nunl.cloudflarestream.com/${videoUID}/thumbnails/thumbnail.jpg`,
         user: {
           connect: {
             id: user?.id,
@@ -61,6 +66,7 @@ async function handler(
       위와 같이 작성 할 수 있음
       */
     });
+
     res.json({ ok: true, streams });
   }
 }
