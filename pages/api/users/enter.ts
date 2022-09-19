@@ -37,7 +37,7 @@ async function handler(
   } else if (email) {
     const mailOptions = {
       from: "kbjtmdals@naver.com",
-      to: "sdko0413@gmail.com",
+      to: email,
       subject: "Nomad Carrot Authentication Email",
       text: `Authentication Code : ${payload}`,
     };
