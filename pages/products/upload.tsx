@@ -23,6 +23,7 @@ interface IUploadProductMutation {
 
 const Upload: NextPage = () => {
   const router = useRouter();
+  const [useStateLoading, setStateLoading] = useState(false);
   const { register, handleSubmit, watch } = useForm<IUploadProductForm>();
   const [uploadProduct, { loading, data }] =
     useMutation<IUploadProductMutation>("/api/products");
@@ -33,6 +34,7 @@ const Upload: NextPage = () => {
   }, [data, router]);
   const onValid = async (data: IUploadProductForm) => {
     if (loading) return;
+    setStateLoading(true);
     if (data.photo && data.photo.length > 0) {
       const { uploadURL } = await (await fetch(`/api/files`)).json();
       const form = new FormData();
@@ -41,8 +43,10 @@ const Upload: NextPage = () => {
         result: { id },
       } = await (await fetch(uploadURL, { method: "POST", body: form })).json();
       uploadProduct({ ...data, photoId: id });
+      setStateLoading(false);
     } else {
       uploadProduct(data);
+      setStateLoading(false);
     }
   };
   const [photoPreview, setPhotoPreview] = useState("");
@@ -109,7 +113,15 @@ const Upload: NextPage = () => {
           name="description"
           label="Description"
         />
-        <Button text={loading ? "Loading..." : "Upload item"} />
+        <Button
+          text={
+            useStateLoading
+              ? "Loading..."
+              : loading
+              ? "Loading..."
+              : "Upload item"
+          }
+        />
       </form>
     </Layout>
   );

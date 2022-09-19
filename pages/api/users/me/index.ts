@@ -83,20 +83,7 @@ async function handler(
       });
       res.json({ ok: true });
     }
-    if (name && name !== currentUser?.name) {
-      const alreadyExists = Boolean(
-        await client.user.findUnique({
-          where: {
-            name,
-          },
-          select: {
-            id: true,
-          },
-        })
-      );
-      if (alreadyExists) {
-        return res.json({ ok: false, error: "This Name already taken." });
-      }
+    if (name) {
       await client.user.update({
         where: {
           id: user?.id,
@@ -105,7 +92,6 @@ async function handler(
           name,
         },
       });
-      res.json({ ok: true });
     }
     if (avatarId) {
       await client.user.update({
