@@ -35,7 +35,7 @@ async function handler(
       body: "어제 내가 말한 메일 보내는거 ㅋㅋ",
     }); */
   } else if (email) {
-    const mailOptions = {
+    /* const mailOptions = {
       from: "kbjtmdals@naver.com",
       to: email,
       subject: "Nomad Carrot Authentication Email",
@@ -53,8 +53,7 @@ async function handler(
         }
       }
     );
-    smtpTransport.close();
-    console.log(result);
+    smtpTransport.close(); */
   }
   return res.json({ ok: true });
 }

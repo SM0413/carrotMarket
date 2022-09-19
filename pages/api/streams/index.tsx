@@ -18,16 +18,18 @@ async function handler(
       },
     } = await (
       await fetch(
-        `https://api.cloudflare.com/client/v4/accounts/${process.env.CF_ID}/stream/live-inputs`,
+        `https://api.cloudflare.com/client/v4/accounts/${process.env.CF_ID}/stream/live_inputs`,
         {
           method: "POST",
           headers: {
             Authorization: `Bearer ${process.env.CF_STREAM_TOKEN}`,
           },
-          body: `meta": {"name":"${name}"},"recording": { "mode": "automatic", "timeoutSeconds": 10}}`,
+          body: `{"meta": {"name":"${name}"},"recording": { "mode": "automatic", "timeoutSeconds": 10}}`,
         }
       )
     ).json();
+    console.log("uid, streamKey, url=>");
+    console.log(uid, streamKey, url);
     const stream = await client.stream.create({
       data: {
         cloudflareId: uid,
