@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import { TalkToSeller } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import useMutation from "@libs/client/useMutation";
-import Preview from "twilio/lib/rest/Preview";
 import useUser from "@libs/client/useUser";
 import { useEffect, useRef, useState } from "react";
 

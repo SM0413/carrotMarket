@@ -10,6 +10,7 @@ async function handler(
   if (req.method === "GET") {
     const {
       session: { user },
+      body,
     } = req;
     const AllChats = await client.talkToSeller.findMany({
       where: {

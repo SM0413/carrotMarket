@@ -9,7 +9,7 @@ async function handler(
 ) {
   const {
     session: { user },
-    query: { talktosellerid, id },
+    query: { talktosellerid },
     body: { message },
   } = req;
 

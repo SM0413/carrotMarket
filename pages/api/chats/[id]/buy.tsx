@@ -9,7 +9,6 @@ async function handler(
 ) {
   const {
     session: { user },
-    query: { id },
     body: { buyorsold, ttsId, isBuyer },
   } = req;
   if (isBuyer) {
