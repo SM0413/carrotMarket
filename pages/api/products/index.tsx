@@ -55,7 +55,6 @@ async function handler(
         },
       },
     });
-    console.log("CreateSale =>", createSale);
     res.json({ ok: true, product });
   }
 }

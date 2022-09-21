@@ -49,21 +49,22 @@ const ChatDetail: NextPage = () => {
       : null
   );
 
-  const [isBuy, setIsBuy] = useState(
-    data?.findTalkToSellerUniq.isbuy ? true : false
-  );
   const ClickBuy = () => {
-    setIsBuy((prev) => !prev);
-    console.log(isBuy);
     if (data?.findTalkToSellerUniq.createdBuyerId === user?.id) {
       setBuy({
-        buyorsold: isBuy,
+        buyorsold:
+          data?.findTalkToSellerUniq.isbuy === null
+            ? true
+            : !data?.findTalkToSellerUniq.isbuy,
         ttsId: data?.findTalkToSellerUniq.id,
         isBuyer: true,
       });
     } else if (data?.findTalkToSellerUniq.createdSellerId === user?.id) {
       setBuy({
-        buyorsold: isBuy,
+        buyorsold:
+          data?.findTalkToSellerUniq.issold === null
+            ? true
+            : !data?.findTalkToSellerUniq.issold,
         ttsId: data?.findTalkToSellerUniq.id,
         isBuyer: false,
       });

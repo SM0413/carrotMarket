@@ -11,7 +11,6 @@ async function handler(
     const {
       session: { user },
     } = req;
-    console.log(user);
     const AllChats = await client.talkToSeller.findMany({
       where: {
         OR: [

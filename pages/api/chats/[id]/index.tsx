@@ -20,7 +20,6 @@ async function handler(
     },
   });
   if (findTalkToSeller === null) {
-    console.log("create");
     const createTalkToSeller = await client.talkToSeller.create({
       data: {
         product: {
