@@ -1,6 +1,7 @@
+import useMutation from "@libs/client/useMutation";
+import useUser from "@libs/client/useUser";
 import { cls } from "@libs/client/utils";
 import { useRouter } from "next/router";
-import useSWR from "swr";
 
 interface ButtonProps {
   large?: boolean;
@@ -11,15 +12,18 @@ interface ButtonProps {
 export default function Button({
   large = false,
   onClick,
+  productId,
+  sellerId,
   text,
   ...rest
 }: ButtonProps) {
   const router = useRouter();
-  console.log("Button router.query=>");
-  console.log(router.query);
   const TalkToSeller = () => {
     if (onClick === "talktoseller") {
-      router.push(`/chats`);
+      router.push({
+        pathname: `/chats/${productId}`,
+        query: { productId: productId, sellerId: sellerId },
+      });
     }
   };
   return (

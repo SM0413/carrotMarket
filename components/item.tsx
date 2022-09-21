@@ -1,9 +1,6 @@
-import useUser from "@libs/client/useUser";
 import { Product } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import useSWR from "swr";
 
 interface ItemProps {
   title: string;
@@ -31,6 +28,7 @@ export default function Item({
       <a className="flex px-4 pt-5 cursor-pointer justify-between">
         <div className="flex space-x-4">
           <Image
+            alt={photo}
             width={80}
             height={80}
             src={`https://imagedelivery.net/GKiagmM6jbANrpjhvaEuYQ/${photo}/public`}

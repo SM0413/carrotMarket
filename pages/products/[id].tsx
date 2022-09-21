@@ -9,6 +9,7 @@ import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
 import useUser from "@libs/client/useUser";
 import Image from "next/image";
+import products from "pages/api/products";
 
 interface IProductWithUser extends Product {
   user: User;
@@ -24,7 +25,6 @@ interface IItemDetailResponse {
 const ItemDetail: NextPage = () => {
   const { user, isLoading } = useUser();
   const router = useRouter();
-  // const { mutate } = useSWRConfig();
   const { data, mutate: boundMutate } = useSWR<IItemDetailResponse>(
     router.query.id && `/api/products/${router.query.id}`
   );
@@ -32,7 +32,6 @@ const ItemDetail: NextPage = () => {
   const onFavClick = () => {
     if (!data) return;
     boundMutate((prev) => prev && { ...prev, isLiked: !prev.isLiked }, false);
-    // mutate("/api/users/me", (prev: any) => ({ ok: !prev.ok }), false);
     toggleFav({});
   };
   return (
@@ -42,8 +41,9 @@ const ItemDetail: NextPage = () => {
           {data?.product.image ? (
             <div className="relative pb-80">
               <Image
+                alt="productImg"
                 src={`https://imagedelivery.net/GKiagmM6jbANrpjhvaEuYQ/${data?.product.image}/public`}
-                className="bg-slate-300 object-none"
+                className="bg-white object-scale-down"
                 layout="fill"
               />
             </div>
@@ -51,11 +51,12 @@ const ItemDetail: NextPage = () => {
             <div className="h-96 bg-slate-300" />
           )}
           <div className="flex cursor-pointer py-3 border-t border-b items-center space-x-3">
-            {user?.avatar ? (
+            {data?.product.user.avatar ? (
               <Image
+                alt={data?.product.user.avatar}
                 width={48}
                 height={48}
-                src={`https://imagedelivery.net/GKiagmM6jbANrpjhvaEuYQ/${user?.avatar}/avatar`}
+                src={`https://imagedelivery.net/GKiagmM6jbANrpjhvaEuYQ/${data?.product.user.avatar}/avatar`}
                 className="w-12 h-12 rounded-full bg-slate-300"
               />
             ) : (
@@ -82,8 +83,15 @@ const ItemDetail: NextPage = () => {
             <p className=" my-6 text-gray-700">
               {!data ? null : data?.product.description}
             </p>
+
             <div className="flex items-center justify-between space-x-2">
-              <Button large text="Talk to seller" />
+              <Button
+                large
+                text="Talk to seller"
+                productId={data?.product.id}
+                onClick="talktoseller"
+                sellerId={data?.product.userId}
+              />
               <button
                 onClick={onFavClick}
                 className={cls(
@@ -132,9 +140,15 @@ const ItemDetail: NextPage = () => {
           <div className=" mt-6 grid grid-cols-2 gap-4">
             {data?.relatedProducts.map((products) => (
               <>
-                <Link href={`/product/detail/${products.id}`}>
+                <Link href={`/products/${products.id}`}>
                   <div key={products.id}>
-                    <div className="hover:cursor-pointer h-56 w-full mb-4 bg-slate-300" />
+                    <Image
+                      alt={products.image}
+                      src={`https://imagedelivery.net/GKiagmM6jbANrpjhvaEuYQ/${products.image}/public`}
+                      width={200}
+                      height={200}
+                      className="hover:cursor-pointer h-56 w-full mb-4 bg-slate-300"
+                    />
                     <h3 className="hover:cursor-pointer text-gray-700 -mb-1">
                       {!data.relatedProducts ? "Loading..." : products.name}
                     </h3>

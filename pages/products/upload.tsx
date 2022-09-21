@@ -29,7 +29,7 @@ const Upload: NextPage = () => {
     useMutation<IUploadProductMutation>("/api/products");
   useEffect(() => {
     if (data?.ok) {
-      router.push(`/products/${data.product.id}`);
+      router.replace(`/products/${data.product.id}`);
     }
   }, [data, router]);
   const onValid = async (data: IUploadProductForm) => {
