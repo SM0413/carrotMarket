@@ -103,19 +103,20 @@ const ChatDetail: NextPage = () => {
   }, [sendMessageData, mutate]);
   return (
     <Layout canGoBack title="채팅">
-      {data?.findTalkToSellerUniq.isbuy && data?.findTalkToSellerUniq.issold && (
+      {data?.findTalkToSellerUniq?.isbuy && data?.findTalkToSellerUniq?.issold && (
         <div className="fixed z-10 flex rounded-md max-w-xl h-10 justify-center items-center  w-full  bg-white">
           <span> 판매가 완료 된 상품입니다.</span>
         </div>
       )}
-      {data?.findTalkToSellerUniq.isbuy && !data?.findTalkToSellerUniq.issold && (
-        <div className="fixed z-10 flex rounded-md max-w-xl h-10 justify-center items-center  w-full  bg-white">
-          <span> 구매예약이 된 상품입니다.</span>
-        </div>
-      )}
-      {data?.findTalkToSellerUniq.createdSellerId === user?.id &&
-        !data?.findTalkToSellerUniq.isbuy &&
-        data?.findTalkToSellerUniq.issold && (
+      {data?.findTalkToSellerUniq?.isbuy &&
+        !data?.findTalkToSellerUniq?.issold && (
+          <div className="fixed z-10 flex rounded-md max-w-xl h-10 justify-center items-center  w-full  bg-white">
+            <span> 구매예약이 된 상품입니다.</span>
+          </div>
+        )}
+      {data?.findTalkToSellerUniq?.createdSellerId === user?.id &&
+        !data?.findTalkToSellerUniq?.isbuy &&
+        data?.findTalkToSellerUniq?.issold && (
           <div className="fixed z-10 flex rounded-md max-w-xl h-10 justify-center items-center  w-full  bg-white">
             <span> 상대방이 구매예약 상태가 아닙니다.</span>
           </div>
@@ -129,32 +130,34 @@ const ChatDetail: NextPage = () => {
             reversed={user?.id === message.user.id ? true : false}
           />
         ))}
-        <div
-          onClick={ClickBuy}
-          className="hover:cursor-pointer flex rounded-md relative max-w-md h-10 justify-center items-center  w-full mx-auto bg-orange-400"
-        >
-          {data?.findTalkToSellerUniq?.createdBuyerId === user?.id && (
-            <span>
-              {data?.findTalkToSellerUniq.isbuy ? "예약 취소" : "구매 예약"}
-            </span>
-          )}
-          {data?.findTalkToSellerUniq.createdSellerId === user?.id && (
-            <span>
-              {!data?.findTalkToSellerUniq.isbuy &&
-                data?.findTalkToSellerUniq.issold &&
-                "판매 취소"}
-              {data?.findTalkToSellerUniq.isbuy &&
-                data?.findTalkToSellerUniq.issold &&
-                "판매 취소"}
-              {data?.findTalkToSellerUniq.isbuy &&
-                !data?.findTalkToSellerUniq.issold &&
-                "판매 확정"}
-              {!data?.findTalkToSellerUniq.isbuy &&
-                !data?.findTalkToSellerUniq.issold &&
-                "판매 확정"}
-            </span>
-          )}
-        </div>
+        {data?.findTalkToSellerUniq?.messages.length !== 0 && (
+          <div
+            onClick={ClickBuy}
+            className="hover:cursor-pointer flex rounded-md relative max-w-md h-10 justify-center items-center  w-full mx-auto bg-orange-400"
+          >
+            {data?.findTalkToSellerUniq?.createdBuyerId === user?.id && (
+              <span>
+                {data?.findTalkToSellerUniq.isbuy ? "예약 취소" : "구매 예약"}
+              </span>
+            )}
+            {data?.findTalkToSellerUniq.createdSellerId === user?.id && (
+              <span>
+                {!data?.findTalkToSellerUniq.isbuy &&
+                  data?.findTalkToSellerUniq.issold &&
+                  "판매 취소"}
+                {data?.findTalkToSellerUniq.isbuy &&
+                  data?.findTalkToSellerUniq.issold &&
+                  "판매 취소"}
+                {data?.findTalkToSellerUniq.isbuy &&
+                  !data?.findTalkToSellerUniq.issold &&
+                  "판매 확정"}
+                {!data?.findTalkToSellerUniq.isbuy &&
+                  !data?.findTalkToSellerUniq.issold &&
+                  "판매 확정"}
+              </span>
+            )}
+          </div>
+        )}
         <form
           onSubmit={handleSubmit(onValid)}
           className="fixed py-2 bg-white  bottom-0 inset-x-0"
