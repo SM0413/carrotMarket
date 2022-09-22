@@ -10,17 +10,19 @@ async function handler(
   const {
     session: { user },
     body,
-    query: { id, sellerId },
+    query: { id, sellerId, buyerId },
   } = req;
+
   const findTalkToSeller = await client.talkToSeller.findFirst({
     where: {
       productId: Number(id),
+      createdSellerId: Number(sellerId),
     },
     select: {
       id: true,
     },
   });
-  if (findTalkToSeller === null) {
+  if (!findTalkToSeller) {
     const createTalkToSeller = await client.talkToSeller.create({
       data: {
         product: {
@@ -45,7 +47,7 @@ async function handler(
     } else {
       res.json({ ok: false });
     }
-  } else if (findTalkToSeller !== null) {
+  } else if (findTalkToSeller) {
     const findTalkToSellerUniq = await client.talkToSeller.findUnique({
       where: {
         id: findTalkToSeller.id,
@@ -56,6 +58,7 @@ async function handler(
         createdSellerId: true,
         isbuy: true,
         issold: true,
+        productId: true,
         product: {
           select: {
             id: true,

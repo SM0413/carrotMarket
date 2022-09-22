@@ -10,47 +10,61 @@ async function handler(
   if (req.method === "GET") {
     const {
       session: { user },
-      body,
+      query: { fromProduct, productId },
     } = req;
-    const AllChats = await client.talkToSeller.findMany({
-      where: {
-        OR: [
-          {
-            createdBuyerId: user?.id,
-          },
-          {
-            createdSellerId: user?.id,
-          },
-        ],
-      },
-      select: {
-        id: true,
-        productId: true,
-        isbuy: true,
-        issold: true,
-        createdSellerId: true,
-        product: {
-          select: {
-            image: true,
-            name: true,
-            userId: true,
-          },
+    if (fromProduct !== "true") {
+      const AllChats = await client.talkToSeller.findMany({
+        where: {
+          OR: [
+            {
+              createdBuyerId: user?.id,
+            },
+            {
+              createdSellerId: user?.id,
+            },
+          ],
         },
-        messages: {
-          select: {
-            message: true,
-            user: {
-              select: {
-                avatar: true,
-                name: true,
+        select: {
+          id: true,
+          productId: true,
+          isbuy: true,
+          issold: true,
+          createdSellerId: true,
+          createdBuyerId: true,
+          isSell: true,
+          product: {
+            select: {
+              image: true,
+              name: true,
+              userId: true,
+            },
+          },
+          messages: {
+            select: {
+              message: true,
+              user: {
+                select: {
+                  avatar: true,
+                  name: true,
+                },
               },
             },
           },
         },
-      },
-    });
-    res.json({ ok: true, AllChats });
-  } else if (req.method === "POST") {
+      });
+      res.json({ ok: true, AllChats });
+    } else {
+      const findtts = await client.talkToSeller.findFirst({
+        where: {
+          productId: Number(productId),
+          createdSellerId: user?.id,
+        },
+        select: {
+          id: true,
+        },
+      });
+      res.json({ ok: true, findtts });
+    }
   }
 }
 

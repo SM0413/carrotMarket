@@ -34,6 +34,8 @@ model User {
   messages        Message[]
   sellerTalk      TalkToSeller[] @relation(name: "sellerTalk")
   buyerTalk       TalkToSeller[] @relation(name: "buyerTalk")
+  carrotseller    isCarrot[]     @relation(name: "carrotseller")
+  carrotbuyer     isCarrot[]     @relation(name: "carrotbuyer")
 }
 
 model Token {
@@ -59,6 +61,7 @@ model Product {
   sale         Sale[]
   purchase     Purchase[]
   talktoseller TalkToSeller[]
+  isCarrot     isCarrot[]
 }
 
 model Fav {
@@ -167,17 +170,35 @@ model Message {
 }
 
 model TalkToSeller {
-  id              Int       @id @default(autoincrement())
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  buyer           User      @relation(name: "buyerTalk", fields: [createdBuyerId], references: [id], onDelete: Cascade)
+  id              Int        @id @default(autoincrement())
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  buyer           User       @relation(name: "buyerTalk", fields: [createdBuyerId], references: [id], onDelete: Cascade)
   createdBuyerId  Int
-  seller          User      @relation(name: "sellerTalk", fields: [createdSellerId], references: [id], onDelete: Cascade)
+  seller          User       @relation(name: "sellerTalk", fields: [createdSellerId], references: [id], onDelete: Cascade)
   createdSellerId Int
-  product         Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product         Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId       Int
-  comments        Int       @default(0)
   messages        Message[]
   isbuy           Boolean?
   issold          Boolean?
+  isCarrot        isCarrot[]
+  isSell          Boolean    @default(false)
+}
+
+model isCarrot {
+  id             Int          @id @default(autoincrement())
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  meetTime       DateTime?
+  starForBuyer   Int?
+  starForSeller  Int?
+  product        Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId      Int
+  buyer          User         @relation(name: "carrotbuyer", fields: [carrotbuyerId], references: [id], onDelete: Cascade)
+  carrotbuyerId  Int
+  seller         User         @relation(name: "carrotseller", fields: [carrotsellerId], references: [id], onDelete: Cascade)
+  carrotsellerId Int
+  tts            TalkToSeller @relation(fields: [ttsId], references: [id], onDelete: Cascade)
+  ttsId          Int
 }

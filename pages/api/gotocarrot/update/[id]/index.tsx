@@ -8,22 +8,23 @@ async function handler(
   res: NextApiResponse<IResponseType>
 ) {
   const {
+    query: { id: carrotId },
     session: { user },
-    body: { buyorsold, ttsId, isBuyer },
+    body: { year, month, day, hour, min },
   } = req;
-  if (isBuyer) {
-    await client.talkToSeller.update({
-      where: { id: Number(ttsId) },
-      data: { isbuy: buyorsold, isSell: buyorsold },
-    });
-    res.json({ ok: true });
-  } else {
-    await client.talkToSeller.update({
-      where: { id: Number(ttsId) },
-      data: { issold: buyorsold, isSell: buyorsold },
-    });
-    res.json({ ok: true });
-  }
+  const updateCarrot = await client.isCarrot.update({
+    where: {
+      id: Number(carrotId),
+    },
+    data: {
+      meetTime:
+        year + "-" + month + "-" + day + "T" + hour + ":" + min + ":00.000Z",
+      // 2022-09-22T04:27:58.258Z
+    },
+  });
+  res.json({ ok: true });
+
+  return;
 }
 
 export default withApiSession(withHandler({ methods: ["POST"], handler }));

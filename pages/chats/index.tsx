@@ -26,7 +26,6 @@ const Chats: NextPage = () => {
             href={{
               pathname: `/chats/${chat.productId}`,
               query: {
-                productId: chat.productId,
                 sellerId: chat.product.userId,
               },
             }}
@@ -46,16 +45,17 @@ const Chats: NextPage = () => {
                   {chat.messages.slice(-1).map((message) => message.message)}
                 </p>
               </div>
-              {chat.isbuy && chat.issold && (
+              {chat.isbuy && chat.issold && !chat.isSell && (
                 <div className="text-center text-gray-500">
-                  <p>판매완료 된 상품</p>
+                  <p>구매 결정이 완료된 상품</p>
                 </div>
               )}
-              {chat.isbuy && !chat.issold && (
+              {chat.isbuy && chat.issold && chat.isSell && (
                 <div className="text-center text-gray-500">
-                  <p>구매예약이 완료된 상품</p>
+                  <p>거래가 완료된 상품</p>
                 </div>
               )}
+
               {chat.createdSellerId === user?.id && chat.issold && !chat.isbuy && (
                 <div className="text-center text-red-500">
                   <p>상대방이 구매예약 상태가 아닙니다</p>

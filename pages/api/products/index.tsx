@@ -41,7 +41,7 @@ async function handler(
         },
       },
     });
-    const createSale = await client.sale.create({
+    await client.sale.create({
       data: {
         user: {
           connect: {

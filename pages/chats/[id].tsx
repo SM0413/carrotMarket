@@ -3,12 +3,17 @@ import Layout from "@components/layout";
 import Message from "@components/message";
 import useSWR from "swr";
 import { useRouter } from "next/router";
-import { TalkToSeller } from "@prisma/client";
+import { isCarrot, TalkToSeller } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import useMutation from "@libs/client/useMutation";
 import useUser from "@libs/client/useUser";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import CarrotDate from "@components/carrotDate";
 
+export interface ISWRCarrotResponse {
+  ok: boolean;
+  findCarrotData: { id: number; meetTime: string };
+}
 interface IMEssage {
   message: string;
   id: number;
@@ -22,7 +27,7 @@ interface ITalkToSellerWithMessage extends TalkToSeller {
   messages: IMEssage[];
 }
 
-interface ICreateTalkToSeller {
+export interface ICreateTalkToSeller {
   ok: boolean;
   findTalkToSellerUniq: ITalkToSellerWithMessage;
 }
@@ -37,14 +42,13 @@ interface IBuy {
 const ChatDetail: NextPage = () => {
   const { user } = useUser();
   const router = useRouter();
-
   const [setBuy, { loading: buyLoading }] = useMutation<IBuy>(
     `/api/chats/${router.query.id}/buy`
   );
 
   const { data, mutate } = useSWR<ICreateTalkToSeller>(
     router.query.id
-      ? `/api/chats/${router.query.id}?productId=${router.query.productId}&sellerId=${router.query.sellerId}`
+      ? `/api/chats/${router.query.id}?sellerId=${router.query.sellerId}&buyerId=${router.query.buyerId}`
       : null
   );
 
@@ -100,27 +104,15 @@ const ChatDetail: NextPage = () => {
       scrollRef?.current?.scrollIntoView();
     }
   }, [sendMessageData, mutate]);
+
+  const { data: findCarrotData } = useSWR<ISWRCarrotResponse>(
+    `/api/gotocarrot/${data?.findTalkToSellerUniq?.id}?sellerId=${data?.findTalkToSellerUniq?.createdSellerId}&buyerId=${data?.findTalkToSellerUniq?.createdBuyerId}&productId=${data?.findTalkToSellerUniq?.productId}`
+  );
+  console.log(data);
   return (
     <Layout canGoBack title="채팅">
-      {data?.findTalkToSellerUniq?.isbuy && data?.findTalkToSellerUniq?.issold && (
-        <div className="fixed z-10 flex rounded-md max-w-xl h-10 justify-center items-center  w-full  bg-white">
-          <span> 판매가 완료 된 상품입니다.</span>
-        </div>
-      )}
-      {data?.findTalkToSellerUniq?.isbuy &&
-        !data?.findTalkToSellerUniq?.issold && (
-          <div className="fixed z-10 flex rounded-md max-w-xl h-10 justify-center items-center  w-full  bg-white">
-            <span> 구매예약이 된 상품입니다.</span>
-          </div>
-        )}
-      {data?.findTalkToSellerUniq?.createdSellerId === user?.id &&
-        !data?.findTalkToSellerUniq?.isbuy &&
-        data?.findTalkToSellerUniq?.issold && (
-          <div className="fixed z-10 flex rounded-md max-w-xl h-10 justify-center items-center  w-full  bg-white">
-            <span> 상대방이 구매예약 상태가 아닙니다.</span>
-          </div>
-        )}
-      <div className="py-10 pb-16 px-4 space-y-4">
+      <CarrotDate CarrotData={findCarrotData} TTSData={data} />
+      <div className="py-14 pb-16 px-4 space-y-4">
         {data?.findTalkToSellerUniq?.messages?.map((message, index) => (
           <Message
             key={index}
@@ -136,22 +128,22 @@ const ChatDetail: NextPage = () => {
           >
             {data?.findTalkToSellerUniq?.createdBuyerId === user?.id && (
               <span>
-                {data?.findTalkToSellerUniq.isbuy ? "예약 취소" : "구매 예약"}
+                {data?.findTalkToSellerUniq?.isbuy ? "예약 취소" : "구매 예약"}
               </span>
             )}
-            {data?.findTalkToSellerUniq.createdSellerId === user?.id && (
+            {data?.findTalkToSellerUniq?.createdSellerId === user?.id && (
               <span>
-                {!data?.findTalkToSellerUniq.isbuy &&
-                  data?.findTalkToSellerUniq.issold &&
+                {!data?.findTalkToSellerUniq?.isbuy &&
+                  data?.findTalkToSellerUniq?.issold &&
                   "판매 취소"}
-                {data?.findTalkToSellerUniq.isbuy &&
-                  data?.findTalkToSellerUniq.issold &&
+                {data?.findTalkToSellerUniq?.isbuy &&
+                  data?.findTalkToSellerUniq?.issold &&
                   "판매 취소"}
-                {data?.findTalkToSellerUniq.isbuy &&
-                  !data?.findTalkToSellerUniq.issold &&
+                {data?.findTalkToSellerUniq?.isbuy &&
+                  !data?.findTalkToSellerUniq?.issold &&
                   "판매 확정"}
-                {!data?.findTalkToSellerUniq.isbuy &&
-                  !data?.findTalkToSellerUniq.issold &&
+                {!data?.findTalkToSellerUniq?.isbuy &&
+                  !data?.findTalkToSellerUniq?.issold &&
                   "판매 확정"}
               </span>
             )}

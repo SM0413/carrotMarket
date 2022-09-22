@@ -34,6 +34,10 @@ const ItemDetail: NextPage = () => {
     boundMutate((prev) => prev && { ...prev, isLiked: !prev.isLiked }, false);
     toggleFav({});
   };
+  const { data: ttsData } = useSWR(
+    `/api/chats?fromProduct=true&productId=${data?.product.id}`
+  );
+  console.log(ttsData);
   return (
     <Layout canGoBack>
       <div className="px-4  py-4">
@@ -85,13 +89,30 @@ const ItemDetail: NextPage = () => {
             </p>
 
             <div className="flex items-center justify-between space-x-2">
-              <Button
-                large
-                text="Talk to seller"
-                productId={data?.product.id}
-                onClick="talktoseller"
-                sellerId={data?.product.userId}
-              />
+              {data?.product.userId !== user?.id ? (
+                <Button
+                  large
+                  text="Talk to seller"
+                  productId={data?.product.id}
+                  onClick="talktoseller"
+                  sellerId={data?.product.userId}
+                />
+              ) : !ttsData?.findtts ? (
+                <span
+                  className="text-center w-full bg-orange-500 hover:bg-orange-600 text-white  px-4 border border-transparent rounded-md shadow-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none
+                  py-3 text-base"
+                >
+                  본인과 대화할 수 없습니다
+                </span>
+              ) : (
+                <Button
+                  large
+                  text="Talk to buyer"
+                  productId={data?.product.id}
+                  onClick="talktoseller"
+                  sellerId={user?.id}
+                />
+              )}
               <button
                 onClick={onFavClick}
                 className={cls(

@@ -22,7 +22,7 @@ export default function Button({
     if (onClick === "talktoseller") {
       router.push({
         pathname: `/chats/${productId}`,
-        query: { productId: productId, sellerId: sellerId },
+        query: { sellerId: sellerId },
       });
     }
   };
