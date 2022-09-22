@@ -1,7 +1,6 @@
 import type { NextPage } from "next";
 import Layout from "@components/layout";
 import { useRouter } from "next/router";
-import { register } from "ts-node";
 import { useForm } from "react-hook-form";
 import useMutation from "@libs/client/useMutation";
 

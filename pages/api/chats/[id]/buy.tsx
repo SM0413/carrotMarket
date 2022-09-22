@@ -8,7 +8,6 @@ async function handler(
   res: NextApiResponse<IResponseType>
 ) {
   const {
-    session: { user },
     body: { buyorsold, ttsId, isBuyer },
   } = req;
   if (isBuyer) {

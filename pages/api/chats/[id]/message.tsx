@@ -13,7 +13,7 @@ async function handler(
     body: { message },
   } = req;
 
-  const createMessage = await client.message.create({
+  await client.message.create({
     data: {
       message,
       user: {

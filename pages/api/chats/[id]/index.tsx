@@ -9,8 +9,7 @@ async function handler(
 ) {
   const {
     session: { user },
-    body,
-    query: { id, sellerId, buyerId },
+    query: { id, sellerId },
   } = req;
 
   const findTalkToSeller = await client.talkToSeller.findFirst({
