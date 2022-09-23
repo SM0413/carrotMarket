@@ -61,7 +61,7 @@ const CarrotDate: NextPage = () => {
     <Layout canGoBack title="구매 날짜 선택" seoTitle="구매 날짜 선택">
       <div>
         <span>구매 날짜를 입력해 주세요</span>
-        <form onSubmit={handleSubmit(onValid)}>
+        <form onSubmit={handleSubmit(() => onValid)}>
           <input defaultValue={year} type="text" {...register("year")} />년
           <input defaultValue={month} type="text" {...register("month")} />월
           <input defaultValue={day} type="text" {...register("day")} />일
