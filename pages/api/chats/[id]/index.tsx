@@ -58,6 +58,7 @@ async function handler(
         isbuy: true,
         issold: true,
         productId: true,
+        isSell: true,
         product: {
           select: {
             id: true,

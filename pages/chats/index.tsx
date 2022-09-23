@@ -24,11 +24,12 @@ const Chats: NextPage = () => {
         {data?.AllChats?.map((chat, index) => (
           <Link
             href={{
-              pathname: `/chats/${chat.productId}`,
+              pathname: `/chats/[id]`,
               query: {
                 sellerId: chat.product.userId,
               },
             }}
+            as={`/chats/${chat.productId}`}
             key={index}
           >
             <a className="flex px-4 cursor-pointer py-3 items-center space-x-3">

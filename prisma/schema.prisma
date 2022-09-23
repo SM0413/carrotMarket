@@ -13,29 +13,31 @@ datasource db {
 }
 
 model User {
-  id              Int            @id @default(autoincrement())
-  name            String?
-  phone           String?        @unique
-  email           String?        @unique
-  avatar          String?
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  tokens          Token[]
-  Product         Product[]
-  fav             Fav[]
-  posts           Post[]
-  answer          Answer[]
-  wondering       Wondering[]
-  writtenReviews  Review[]       @relation(name: "writtenReviews")
-  receivedReviews Review[]       @relation(name: "receivedReviews")
-  sale            Sale[]
-  purchase        Purchase[]
-  stream          Stream[]
-  messages        Message[]
-  sellerTalk      TalkToSeller[] @relation(name: "sellerTalk")
-  buyerTalk       TalkToSeller[] @relation(name: "buyerTalk")
-  carrotseller    isCarrot[]     @relation(name: "carrotseller")
-  carrotbuyer     isCarrot[]     @relation(name: "carrotbuyer")
+  id                  Int             @id @default(autoincrement())
+  name                String?
+  phone               String?         @unique
+  email               String?         @unique
+  avatar              String?
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  tokens              Token[]
+  Product             Product[]
+  fav                 Fav[]
+  posts               Post[]
+  answer              Answer[]
+  wondering           Wondering[]
+  writtenReviews      Review[]        @relation(name: "writtenReviews")
+  receivedReviews     Review[]        @relation(name: "receivedReviews")
+  sale                Sale[]
+  purchase            Purchase[]
+  stream              Stream[]
+  messages            Message[]
+  sellerTalk          TalkToSeller[]  @relation(name: "sellerTalk")
+  buyerTalk           TalkToSeller[]  @relation(name: "buyerTalk")
+  carrotseller        isCarrot[]      @relation(name: "carrotseller")
+  carrotbuyer         isCarrot[]      @relation(name: "carrotbuyer")
+  carrotcommentbuyer  CarrotComment[] @relation(name: "carrotcommentbuyer")
+  carrotcommentseller CarrotComment[] @relation(name: "carrotcommentseller")
 }
 
 model Token {
@@ -48,20 +50,21 @@ model Token {
 }
 
 model Product {
-  id           Int            @id @default(autoincrement())
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       Int
-  image        String         @db.Text
-  name         String
-  price        Int
-  description  String         @db.MediumText
-  fav          Fav[]
-  sale         Sale[]
-  purchase     Purchase[]
-  talktoseller TalkToSeller[]
-  isCarrot     isCarrot[]
+  id            Int             @id @default(autoincrement())
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        Int
+  image         String          @db.Text
+  name          String
+  price         Int
+  description   String          @db.MediumText
+  fav           Fav[]
+  sale          Sale[]
+  purchase      Purchase[]
+  talktoseller  TalkToSeller[]
+  isCarrot      isCarrot[]
+  carrotComment CarrotComment[]
 }
 
 model Fav {
@@ -191,8 +194,6 @@ model isCarrot {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   meetTime       DateTime?
-  starForBuyer   Int?
-  starForSeller  Int?
   product        Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId      Int
   buyer          User         @relation(name: "carrotbuyer", fields: [carrotbuyerId], references: [id], onDelete: Cascade)
@@ -201,4 +202,21 @@ model isCarrot {
   carrotsellerId Int
   tts            TalkToSeller @relation(fields: [ttsId], references: [id], onDelete: Cascade)
   ttsId          Int
+}
+
+model CarrotComment {
+  id                    Int       @id @default(autoincrement())
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  meetTime              DateTime?
+  product               Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId             Int
+  buyer                 User      @relation(name: "carrotcommentbuyer", fields: [carrotcommentbuyerId], references: [id], onDelete: Cascade)
+  carrotcommentbuyerId  Int
+  seller                User      @relation(name: "carrotcommentseller", fields: [carrotcommentsellerId], references: [id], onDelete: Cascade)
+  carrotcommentsellerId Int
+  buyerComment          String?
+  sellerComment         String?
+  starForBuyer          Int       @default(5)
+  starForSeller         Int       @default(5)
 }

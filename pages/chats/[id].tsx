@@ -3,7 +3,7 @@ import Layout from "@components/layout";
 import Message from "@components/message";
 import useSWR from "swr";
 import { useRouter } from "next/router";
-import { TalkToSeller } from "@prisma/client";
+import { CarrotComment, TalkToSeller } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import useMutation from "@libs/client/useMutation";
 import useUser from "@libs/client/useUser";
@@ -39,9 +39,15 @@ interface IBuy {
   ok: boolean;
 }
 
+interface ICarrotCommentResponse {
+  ok: boolean;
+  carrotComment: CarrotComment;
+}
+
 const ChatDetail: NextPage = () => {
   const { user } = useUser();
   const router = useRouter();
+
   const [setBuy, { loading: buyLoading }] = useMutation<IBuy>(
     `/api/chats/${router.query.id}/buy`
   );
@@ -50,6 +56,9 @@ const ChatDetail: NextPage = () => {
     router.query.id
       ? `/api/chats/${router.query.id}?sellerId=${router.query.sellerId}&buyerId=${router.query.buyerId}`
       : null
+  );
+  const { data: carrotComment } = useSWR<ICarrotCommentResponse>(
+    `/api/chats/carrotcomment?productId=${data?.findTalkToSellerUniq?.productId}&buyerId=${data?.findTalkToSellerUniq?.createdBuyerId}&sellerId=${data?.findTalkToSellerUniq?.createdSellerId}`
   );
 
   const ClickBuy = () => {
@@ -108,10 +117,14 @@ const ChatDetail: NextPage = () => {
   const { data: findCarrotData } = useSWR<ISWRCarrotResponse>(
     `/api/gotocarrot/${data?.findTalkToSellerUniq?.id}?sellerId=${data?.findTalkToSellerUniq?.createdSellerId}&buyerId=${data?.findTalkToSellerUniq?.createdBuyerId}&productId=${data?.findTalkToSellerUniq?.productId}`
   );
-  console.log(data);
+
   return (
     <Layout canGoBack title="채팅">
-      <CarrotDate CarrotData={findCarrotData} TTSData={data} />
+      <CarrotDate
+        CarrotData={findCarrotData}
+        TTSData={data}
+        CarrotCommentData={carrotComment}
+      />
       <div className="py-14 pb-16 px-4 space-y-4">
         {data?.findTalkToSellerUniq?.messages?.map((message, index) => (
           <Message

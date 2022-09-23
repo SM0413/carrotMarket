@@ -20,10 +20,13 @@ export default function Button({
   const router = useRouter();
   const TalkToSeller = () => {
     if (onClick === "talktoseller") {
-      router.push({
-        pathname: `/chats/${productId}`,
-        query: { sellerId: sellerId },
-      });
+      router.push(
+        {
+          pathname: `/chats/${productId}`,
+          query: { sellerId: sellerId },
+        },
+        `/chats/${productId}`
+      );
     }
   };
   return (

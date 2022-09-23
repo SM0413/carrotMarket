@@ -12,7 +12,6 @@ async function handler(
       query: { sellerId, buyerId, id: ttsId, productId },
       session: { user },
     } = req;
-    console.log(sellerId, buyerId, ttsId);
     const alreadyCarrot = await client.isCarrot.findFirst({
       where: {
         ttsId: Number(ttsId),
@@ -23,8 +22,6 @@ async function handler(
         id: true,
       },
     });
-    console.log("alreadyCarrot=>");
-    console.log(alreadyCarrot);
     if (alreadyCarrot) {
       const findCarrotData = await client.isCarrot.findUnique({
         where: {
@@ -35,8 +32,6 @@ async function handler(
           meetTime: true,
         },
       });
-      console.log("findCarrotData=>");
-      console.log(findCarrotData);
       res.json({ ok: true, findCarrotData });
     } else {
       const createCarrot = await client.isCarrot.create({

@@ -1,17 +1,17 @@
+import useMutation from "@libs/client/useMutation";
 import useUser from "@libs/client/useUser";
 import { cls } from "@libs/client/utils";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { ISWRCarrotResponse } from "../pages/chats/[id]";
 
 interface CarrotProps {
   [key: string]: any;
 }
 
 export default function CarrotDate({
-  onClick,
   CarrotData,
   TTSData,
+  CarrotCommentData,
 }: CarrotProps) {
   const router = useRouter();
   const { user } = useUser();
@@ -19,17 +19,33 @@ export default function CarrotDate({
   const [isBuyer, setisBuyer] = useState(true);
   const [show, setShow] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(false);
+
   const ClickGoToCarrot = () => {
-    // if (carrotLoading) return;
-    if (CarrotData && CarrotData.ok) {
-      console.log("여기로 와야해...");
-      router.push({
-        pathname: `/carrotDate/${CarrotData?.findCarrotData?.id}`,
-        query: {
-          productId: TTSData?.findTalkToSellerUniq?.productId,
-          sellerId: TTSData?.findTalkToSellerUniq?.createdSellerId,
+    if (textValue === "후기를 입력 해 보세요") {
+      router.push(
+        {
+          pathname: `/carrotDate/comment/${CarrotData?.findCarrotData?.id}`,
+          query: {
+            productId: TTSData?.findTalkToSellerUniq?.productId,
+            sellerId: TTSData?.findTalkToSellerUniq?.createdSellerId,
+            buyerId: TTSData?.findTalkToSellerUniq?.createdBuyerId,
+          },
         },
-      });
+        `/carrotDate/comment/${CarrotData?.findCarrotData?.id}`
+      );
+    } else {
+      if (CarrotData && CarrotData.ok) {
+        router.push(
+          {
+            pathname: `/carrotDate/${CarrotData?.findCarrotData?.id}`,
+            query: {
+              productId: TTSData?.findTalkToSellerUniq?.productId,
+              sellerId: TTSData?.findTalkToSellerUniq?.createdSellerId,
+            },
+          },
+          `/carrotDate/${CarrotData?.findCarrotData?.id}`
+        );
+      }
     }
   };
 
@@ -57,7 +73,8 @@ export default function CarrotDate({
     } else if (
       TTSData?.findTalkToSellerUniq?.isbuy &&
       TTSData?.findTalkToSellerUniq?.issold &&
-      CarrotData?.findCarrotData?.meetTime
+      CarrotData?.findCarrotData?.meetTime &&
+      !TTSData?.findTalkToSellerUniq?.isSell
     ) {
       setShow(true);
       setisBuyer(true);
@@ -81,12 +98,19 @@ export default function CarrotDate({
       setTimeRemaining(false);
       setTextValue("상대방이 구매예약 상태가 아닙니다.");
     } else if (
-      !TTSData?.findTalkToSellerUniq?.isbuy &&
-      !TTSData?.findTalkToSellerUniq?.issold
+      (!TTSData?.findTalkToSellerUniq?.isbuy &&
+        !TTSData?.findTalkToSellerUniq?.issold) ||
+      (CarrotCommentData?.carrotComment?.carrotcommentbuyerId === user?.id &&
+        CarrotCommentData?.carrotComment?.buyerComment) ||
+      (CarrotCommentData?.carrotComment?.carrotcommentsellerId === user?.id &&
+        CarrotCommentData?.carrotComment?.sellerComment)
     ) {
       setShow(false);
+    } else if (TTSData?.findTalkToSellerUniq?.isSell) {
+      setShow(true);
+      setTextValue("후기를 입력 해 보세요");
     }
-  }, [CarrotData, TTSData, user]);
+  }, [CarrotData, TTSData, user, CarrotCommentData]);
 
   let CarrotTime, CarrotYMD, CarrotHM;
   if (CarrotData?.findCarrotData?.meetTime) {
@@ -108,13 +132,14 @@ export default function CarrotDate({
     <div
       onClick={ClickGoToCarrot}
       className={cls(
-        " fixed z-10 my-3 border-b-2 flex flex-col rounded-md max-w-xl h-10 justify-center items-center  w-full  bg-white",
+        " fixed z-10 flex flex-col rounded-md max-w-xl h-10 justify-center items-center  w-full  bg-white",
         isBuyer ? "hover:cursor-pointer" : "",
-        show ? "" : "hidden"
+        show ? "" : "hidden",
+        timeRemaining ? "my-3" : ""
       )}
     >
       <span> {textValue}</span>
-      {timeRemaining && (
+      {timeRemaining && !TTSData?.findTalkToSellerUniq?.isSell && (
         <span>
           거래 시간 - <strong>{CarrotTime}</strong>
         </span>

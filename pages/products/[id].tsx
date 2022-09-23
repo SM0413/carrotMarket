@@ -37,7 +37,6 @@ const ItemDetail: NextPage = () => {
   const { data: ttsData } = useSWR(
     `/api/chats?fromProduct=true&productId=${data?.product.id}`
   );
-  console.log(ttsData);
   return (
     <Layout canGoBack>
       <div className="px-4  py-4">
