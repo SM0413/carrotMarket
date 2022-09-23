@@ -31,15 +31,15 @@ async function handler(
   if (phone) {
     /* await twilioClient.messages.create({
       messagingServiceSid: process.env.MESSAGE_SERVICE_SID,
-      to: process.env.PHONE_NUMBER!,
-      body: "어제 내가 말한 메일 보내는거 ㅋㅋ",
+      to: phone
+      body: `From CarrotMarket => This is your Code : ${payload}`,
     }); */
   } else if (email) {
     /* const mailOptions = {
       from: "kbjtmdals@naver.com",
       to: email,
-      subject: "Nomad Carrot Authentication Email",
-      text: `Authentication Code : ${payload}`,
+      subject: "CarrotMarket Code Email",
+      text: `From CarrotMarket => This is your Code : ${payload}`,
     };
     const result = await smtpTransport.sendMail(
       mailOptions,

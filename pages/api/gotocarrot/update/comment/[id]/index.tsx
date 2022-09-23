@@ -12,8 +12,6 @@ async function handler(
     query: { id: isCarrotId, productId, buyerId, sellerId },
     session: { user },
   } = req;
-  console.log(productId, buyerId, sellerId);
-  console.log(comment);
   const alreadyCarrotComment = await client.carrotComment.findFirst({
     where: {
       productId: Number(productId),
