@@ -18,7 +18,7 @@ const Chats: NextPage = () => {
   const { user } = useUser();
   const { data } = useSWR<IChatsResponse>(`/api/chats`);
   return (
-    <Layout hasTabBar title="채팅">
+    <Layout hasTabBar title="채팅" seoTitle="채팅">
       <div className="divide-y-[1px] ">
         {data?.AllChats?.map((chat, index) => (
           <Link

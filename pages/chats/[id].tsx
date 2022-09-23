@@ -117,7 +117,7 @@ const ChatDetail: NextPage = () => {
   );
 
   return (
-    <Layout canGoBack title="채팅">
+    <Layout canGoBack title="채팅" seoTitle="채팅">
       <CarrotDate
         CarrotData={findCarrotData}
         TTSData={data}

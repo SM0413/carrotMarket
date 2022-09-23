@@ -21,7 +21,7 @@ interface IProductResponse {
 const Home: NextPage = () => {
   const { data } = useSWR<IProductResponse>("/api/products");
   return (
-    <Layout title="홈" hasTabBar>
+    <Layout title="홈" hasTabBar seoTitle="Home">
       <Head>
         <title>Home</title>
       </Head>

@@ -58,7 +58,7 @@ const CarrotDate: NextPage = () => {
   const min = new Intl.DateTimeFormat("en", { minute: "numeric" }).format();
   //현재 시간 출력 끝
   return (
-    <Layout canGoBack title="구매 날짜 선택">
+    <Layout canGoBack title="구매 날짜 선택" seoTitle="구매 날짜 선택">
       <div>
         <span>구매 날짜를 입력해 주세요</span>
         <form onSubmit={handleSubmit(onValid)}>

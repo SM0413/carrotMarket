@@ -23,7 +23,7 @@ const CarrotDate: NextPage = () => {
     }
   };
   return (
-    <Layout canGoBack title="후기 작성">
+    <Layout canGoBack title="후기 작성" seoTitle="후기 작성">
       <div>
         <form onSubmit={handleSubmit(onValid)}>
           <span>후기를 입력해 주세요</span>
