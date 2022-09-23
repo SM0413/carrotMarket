@@ -10,6 +10,7 @@ async function handler(
   const {
     body: { buyorsold, ttsId, isBuyer },
   } = req;
+
   if (isBuyer) {
     await client.talkToSeller.update({
       where: { id: Number(ttsId) },

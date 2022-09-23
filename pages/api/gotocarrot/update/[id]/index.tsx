@@ -9,7 +9,6 @@ async function handler(
 ) {
   const {
     query: { id: carrotId },
-    session: { user },
     body: { year, month, day, hour, min },
   } = req;
   const updateCarrot = await client.isCarrot.update({

@@ -10,6 +10,7 @@ interface IForm {
 }
 const CarrotDate: NextPage = () => {
   const router = useRouter(); //query:{buyerId, id:isCarrotId,  productId, sellerId}
+
   const [carrotComment, { loading }] = useMutation(
     `/api/gotocarrot/update/comment/${router.query.id}?productId=${router.query.productId}&sellerId=${router.query.sellerId}&buyerId=${router.query.buyerId}`
   );

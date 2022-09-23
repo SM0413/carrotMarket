@@ -219,4 +219,5 @@ model CarrotComment {
   sellerComment         String?
   starForBuyer          Int       @default(5)
   starForSeller         Int       @default(5)
+  
 }

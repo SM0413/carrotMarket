@@ -10,7 +10,6 @@ async function handler(
   if (req.method === "GET") {
     const {
       query: { sellerId, buyerId, id: ttsId, productId },
-      session: { user },
     } = req;
     const alreadyCarrot = await client.isCarrot.findFirst({
       where: {

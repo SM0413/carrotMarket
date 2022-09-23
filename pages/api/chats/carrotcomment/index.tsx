@@ -17,6 +17,7 @@ async function handler(
       carrotcommentsellerId: Number(sellerId),
     },
   });
+
   res.json({ ok: true, carrotComment });
 }
 

@@ -21,6 +21,7 @@ async function handler(
       id: true,
     },
   });
+
   if (!findTalkToSeller) {
     const createTalkToSeller = await client.talkToSeller.create({
       data: {

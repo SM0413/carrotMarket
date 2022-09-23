@@ -25,6 +25,7 @@ const CarrotDate: NextPage = () => {
     }
     updateCarrotDate(form);
   };
+
   if (data && data.ok) {
     router.replace(
       `/chats/${router.query.productId}?sellerId=${router.query.sellerId}`

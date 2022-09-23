@@ -5,7 +5,6 @@ import useSWR from "swr";
 import { Message, Product, TalkToSeller } from "@prisma/client";
 import Image from "next/image";
 import useUser from "@libs/client/useUser";
-//
 interface IWithProductAndMessge extends TalkToSeller {
   messages: Message[];
   product: Product;

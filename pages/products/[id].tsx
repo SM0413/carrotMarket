@@ -9,7 +9,6 @@ import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
 import useUser from "@libs/client/useUser";
 import Image from "next/image";
-import products from "pages/api/products";
 
 interface IProductWithUser extends Product {
   user: User;

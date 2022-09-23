@@ -48,9 +48,7 @@ const ChatDetail: NextPage = () => {
   const { user } = useUser();
   const router = useRouter();
 
-  const [setBuy, { loading: buyLoading }] = useMutation<IBuy>(
-    `/api/chats/${router.query.id}/buy`
-  );
+  const [setBuy] = useMutation<IBuy>(`/api/chats/${router.query.id}/buy`);
 
   const { data, mutate } = useSWR<ICreateTalkToSeller>(
     router.query.id
