@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.blog-post-content h1 {
+  @apply text-center justify-center;
+}
+
+.blog-post-content p {
+  @apply text-center justify-center text-blue-400;
+}
+
+.blog-post-content ul {
+  @apply text-center justify-center list-disc content-center;
+}

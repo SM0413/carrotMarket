@@ -12,7 +12,7 @@ interface IPost {
 }
 const Blog: NextPage<{ posts: IPost[] }> = ({ posts }) => {
   return (
-    <Layout title="Blog" seoTitle="Blog">
+    <Layout canGoBack title="Blog" seoTitle="Blog">
       <h1 className="font-serif text-lg text-center justify-center">
         Latest Posts:
       </h1>
