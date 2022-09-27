@@ -61,6 +61,7 @@ const Home: NextPage = () => {
 };
 
 const Page: NextPage<{ products: ProductWithCount[] }> = ({ products }) => {
+  useUser();
   return (
     <SWRConfig
       value={{
