@@ -29,13 +29,13 @@ async function handler(
     },
   });
   if (phone) {
-    // await twilioClient.messages.create({
-    //   messagingServiceSid: process.env.MESSAGE_SERVICE_SID,
-    //   to: String(process.env.PHONE_NUMBER),
-    //   body: `From CarrotMarket => This is your Code : ${payload}`,
-    // });ㄹ
+    await twilioClient.messages.create({
+      messagingServiceSid: process.env.MESSAGE_SERVICE_SID,
+      to: "82" + phone,
+      body: `From CarrotMarket => This is your Code : ${payload}`,
+    });
   } else if (email) {
-    /* const mailOptions = {
+    const mailOptions = {
       from: "kbjtmdals@naver.com",
       to: email,
       subject: "CarrotMarket Code Email",
@@ -53,7 +53,7 @@ async function handler(
         }
       }
     );
-    smtpTransport.close(); */
+    smtpTransport.close();
   }
   return res.json({ ok: true });
 }
