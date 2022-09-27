@@ -29,11 +29,11 @@ async function handler(
     },
   });
   if (phone) {
-    /* await twilioClient.messages.create({
-      messagingServiceSid: process.env.MESSAGE_SERVICE_SID,
-      to: phone
-      body: `From CarrotMarket => This is your Code : ${payload}`,
-    }); */
+    // await twilioClient.messages.create({
+    //   messagingServiceSid: process.env.MESSAGE_SERVICE_SID,
+    //   to: String(process.env.PHONE_NUMBER),
+    //   body: `From CarrotMarket => This is your Code : ${payload}`,
+    // });ㄹ
   } else if (email) {
     /* const mailOptions = {
       from: "kbjtmdals@naver.com",

@@ -47,6 +47,8 @@ model Token {
   userId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId])
 }
 
 model Product {
@@ -65,6 +67,8 @@ model Product {
   talktoseller  TalkToSeller[]
   isCarrot      isCarrot[]
   carrotComment CarrotComment[]
+
+  @@index([userId])
 }
 
 model Fav {
@@ -75,6 +79,8 @@ model Fav {
   productId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId, productId])
 }
 
 model Post {
@@ -88,6 +94,8 @@ model Post {
   longitude Float?
   answers   Answer[]
   wondering Wondering[]
+
+  @@index([userId])
 }
 
 model Answer {
@@ -99,6 +107,8 @@ model Answer {
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
   answer    String   @db.MediumText
+
+  @@index([userId, postId])
 }
 
 model Wondering {
@@ -109,6 +119,8 @@ model Wondering {
   userId    Int
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
+
+  @@index([userId, postId])
 }
 
 model Review {
@@ -121,6 +133,8 @@ model Review {
   createdFor   User     @relation(name: "receivedReviews", fields: [createdForId], references: [id], onDelete: Cascade)
   createdForId Int
   score        Int      @default(1)
+
+  @@index([createdById, createdForId])
 }
 
 model Sale {
@@ -131,6 +145,8 @@ model Sale {
   productId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId, productId])
 }
 
 model Purchase {
@@ -141,6 +157,8 @@ model Purchase {
   productId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId, productId])
 }
 
 model Stream {
@@ -157,6 +175,8 @@ model Stream {
   cloudflareURL String
   cloudflareKey String
   coverImg      String    @default("")
+
+  @@index([userId])
 }
 
 model Message {
@@ -170,6 +190,8 @@ model Message {
   streamId       Int?
   talktoseller   TalkToSeller? @relation(fields: [talktosellerId], references: [id], onDelete: Cascade)
   talktosellerId Int?
+
+  @@index([userId, streamId])
 }
 
 model TalkToSeller {
@@ -187,6 +209,8 @@ model TalkToSeller {
   issold          Boolean?
   isCarrot        isCarrot[]
   isSell          Boolean    @default(false)
+
+  @@index([createdBuyerId, createdSellerId, productId])
 }
 
 model isCarrot {
@@ -202,6 +226,8 @@ model isCarrot {
   carrotsellerId Int
   tts            TalkToSeller @relation(fields: [ttsId], references: [id], onDelete: Cascade)
   ttsId          Int
+
+  @@index([productId, carrotbuyerId, carrotsellerId, ttsId])
 }
 
 model CarrotComment {
@@ -219,5 +245,6 @@ model CarrotComment {
   sellerComment         String?
   starForBuyer          Int       @default(5)
   starForSeller         Int       @default(5)
-  
+
+  @@index([productId, carrotcommentbuyerId, carrotcommentsellerId, starForBuyer, starForSeller])
 }
