@@ -18,6 +18,7 @@ interface IReviewResponse {
 }
 
 const Profile: NextPage = () => {
+  useUser();
   const { user } = useUser();
   const { data } = useSWR<IReviewResponse>("/api/reviews");
   return (

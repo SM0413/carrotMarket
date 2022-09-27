@@ -6,6 +6,7 @@ import useSWR from "swr";
 import { Stream } from "@prisma/client";
 import Image from "next/image";
 import { useEffect } from "react";
+import useUser from "@libs/client/useUser";
 
 interface IStreamsResponse {
   ok: boolean;
@@ -13,6 +14,7 @@ interface IStreamsResponse {
 }
 
 const Streams: NextPage = () => {
+  useUser();
   const { data } = useSWR<IStreamsResponse>(`/api/streams`);
   return (
     <Layout hasTabBar title="라이브" seoTitle="Live">

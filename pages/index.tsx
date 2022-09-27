@@ -6,6 +6,7 @@ import Head from "next/head";
 import useSWR, { SWRConfig } from "swr";
 import { Product } from "@prisma/client";
 import client from "@libs/server/client";
+import useUser from "@libs/client/useUser";
 
 export interface ProductWithCount extends Product {
   _count: {
